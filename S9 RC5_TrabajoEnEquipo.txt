@@ -1,0 +1,73 @@
+package hotel.reservas;
+
+import java.util.ArrayList;
+import java.util.List;
+
+// Clase Hotel
+public class Hotel {
+    private String nombre;
+    private String direccion;
+    private List<Habitacion> habitaciones;
+
+    public Hotel(String nombre, String direccion) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.habitaciones = new ArrayList<>();
+    }
+
+    public void agregarHabitacion(Habitacion habitacion) {
+        habitaciones.add(habitacion);
+    }
+
+    public boolean consultarDisponibilidad(int numero) {
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getNumero() == numero && habitacion.isDisponible()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Reserva crearReserva(String cliente, int numeroHabitacion) {
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getNumero() == numeroHabitacion && habitacion.isDisponible()) {
+                habitacion.setDisponible(false);
+                return new Reserva(cliente, habitacion);
+            }
+        }
+        return null;
+    }
+}
+
+// Clase Habitación
+class Habitacion {
+    private int numero;
+    private String tipo;
+    private boolean disponible;
+
+    public Habitacion(int numero, String tipo) {
+        this.numero = numero;
+        this.tipo = tipo;
+        this.disponible = true;
+    }
+
+    public int getNumero() { return numero; }
+    public boolean isDisponible() { return disponible; }
+    public void setDisponible(boolean disponible) { this.disponible = disponible; }
+}
+
+// Clase Reserva
+class Reserva {
+    private String cliente;
+    private Habitacion habitacion;
+
+    public Reserva(String cliente, Habitacion habitacion) {
+        this.cliente = cliente;
+        this.habitacion = habitacion;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{" + "cliente='" + cliente + '\'' + ", habitacion=" + habitacion.getNumero() + '}';
+    }
+}
